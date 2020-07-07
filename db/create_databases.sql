@@ -1,0 +1,3 @@
+CREATE DATABASE teaching_management_dev;
+
+CREATE DATABASE teaching_management_test;

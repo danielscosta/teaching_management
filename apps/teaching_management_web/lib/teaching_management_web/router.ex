@@ -5,7 +5,7 @@ defmodule TeachingManagementWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", TeachingManagementWeb do
+  scope "/api/v1", TeachingManagementWeb do
     pipe_through :api
   end
 

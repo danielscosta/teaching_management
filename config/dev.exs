@@ -1,11 +1,11 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :teaching_management, TeachingManagement.Repo,
   username: "postgres",
   password: "postgres",
   database: "teaching_management_dev",
-  hostname: "localhost",
+  hostname: System.get_env("PG_HOST", "localhost"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -18,9 +18,10 @@ config :teaching_management, TeachingManagement.Repo,
 config :teaching_management_web, TeachingManagementWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
-  code_reloader: true,
+  code_reloader: false,
   check_origin: false,
-  watchers: []
+  watchers: [],
+  server: true
 
 # ## SSL Support
 #

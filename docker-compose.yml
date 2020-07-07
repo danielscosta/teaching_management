@@ -1,0 +1,52 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: teaching-management-db
+    volumes:
+      - ./db/create_databases.sql:/docker-entrypoint-initdb.d/create_databases.sql
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5403:5432"
+    networks:
+      default:
+        aliases:
+          - teaching-management-db
+
+  app:
+    build:
+      context: .
+      args:
+        - MIX_ENV=dev
+    volumes:
+      - .:/teaching_management
+      - "build:/teaching_management/_build"
+      - "deps:/teaching_management/deps"  
+    environment:
+      - PG_HOST=teaching-management-db 
+      - MIX_ENV=dev
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile-test
+      args:
+        - MIX_ENV=test
+    volumes:
+      - .:/teaching_management
+      - "build:/teaching_management/_build"
+      - "deps:/teaching_management/deps"
+    environment:
+      - PG_HOST=teaching-management-db 
+    depends_on:
+      - db
+
+volumes:
+  build:
+  deps:

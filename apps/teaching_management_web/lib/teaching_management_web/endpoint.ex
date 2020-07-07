@@ -10,10 +10,6 @@ defmodule TeachingManagementWeb.Endpoint do
     signing_salt: "m6+m8d12"
   ]
 
-  socket "/socket", TeachingManagementWeb.UserSocket,
-    websocket: true,
-    longpoll: false
-
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.

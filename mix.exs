@@ -7,7 +7,28 @@ defmodule TeachingManagement.Umbrella.MixProject do
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      releases: [
+        teaching_management: [
+          include_executables_for: [:unix],
+          applications: [
+            teaching_management: :permanent,
+            teaching_management_web: :permanent,
+            runtime_tools: :permanent,
+            jason: :permanent,
+            os_mon: :permanent
+          ],
+          quiet: true
+        ]
+      ],
+      version: "0.1.0"
     ]
   end
 
@@ -24,7 +45,10 @@ defmodule TeachingManagement.Umbrella.MixProject do
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps/ folder.
   defp deps do
-    []
+    [
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.12.3", only: :test}
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
