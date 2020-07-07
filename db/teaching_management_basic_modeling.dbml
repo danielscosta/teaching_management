@@ -1,0 +1,56 @@
+Table teachers {
+  id int [pk]
+  document varchar [not null, unique]
+}
+
+Table students {
+  id int [pk]
+  internal_code int [not null, unique]
+}
+
+Table groups {
+  id int [pk]
+}
+
+Table students_groups {
+  id int [pk]
+  group_id int
+  student_id int
+}
+
+Table tests {
+  id int [pk]
+}
+
+Table questions {
+  id int [pk]
+  multiple_choide boolean
+  test_id int
+}
+
+Table answers {
+  id int [pk]
+  student_id int
+  question_id int
+  valuation int
+}
+
+Ref {
+  students_groups.group_id > groups.id
+} 
+
+Ref {
+  students_groups.student_id > students.id
+}
+
+Ref {
+  questions.test_id > tests.id
+}
+
+Ref {
+  answers.student_id > students.id
+} 
+
+Ref {
+  answers.question_id > questions.id
+} 
