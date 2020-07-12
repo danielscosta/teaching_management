@@ -39,7 +39,8 @@ defmodule TeachingManagement.AccountsTest do
     end
 
     test "create_teacher/1 with invalid document returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_teacher(%{@valid_attrs | document: "0"})
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.create_teacher(%{@valid_attrs | document: "0"})
     end
 
     test "update_teacher/2 with valid data updates the teacher" do
