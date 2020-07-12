@@ -5,8 +5,14 @@ defmodule TeachingManagementWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api/v1", TeachingManagementWeb do
+  scope "/api/v1" do
     pipe_through :api
+
+    forward "/graphql", Absinthe.Plug, schema: TeachingManagementWeb.Schema
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: TeachingManagementWeb.Schema,
+      interface: :playground
   end
 
   # Enables LiveDashboard only for development

@@ -19,6 +19,7 @@ defmodule TeachingManagement.Accounts.Student do
     student
     |> cast(attrs, [:internal_code])
     |> validate_required([:internal_code])
+    |> unique_constraint(:internal_code)
     |> put_assoc(:groups, groups)
   end
 end

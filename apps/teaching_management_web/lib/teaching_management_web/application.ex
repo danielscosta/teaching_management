@@ -10,7 +10,8 @@ defmodule TeachingManagementWeb.Application do
       # Start the Telemetry supervisor
       TeachingManagementWeb.Telemetry,
       # Start the Endpoint (http/https)
-      TeachingManagementWeb.Endpoint
+      TeachingManagementWeb.Endpoint,
+      {Absinthe.Subscription, TeachingManagementWeb.Endpoint}
       # Start a worker by calling: TeachingManagementWeb.Worker.start_link(arg)
       # {TeachingManagementWeb.Worker, arg}
     ]

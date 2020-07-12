@@ -21,9 +21,8 @@ services:
       args:
         - MIX_ENV=dev
     volumes:
-      - .:/teaching_management
-      - "build:/teaching_management/_build"
-      - "deps:/teaching_management/deps"  
+      - "build:/opt/built/_build"
+      - "deps:/opt/built/deps"  
     environment:
       - PG_HOST=teaching-management-db 
       - MIX_ENV=dev
@@ -39,9 +38,9 @@ services:
       args:
         - MIX_ENV=test
     volumes:
-      - .:/teaching_management
-      - "build:/teaching_management/_build"
-      - "deps:/teaching_management/deps"
+      - .:/opt/built
+      - "build:/opt/built/_build"
+      - "deps:/opt/built/deps" 
     environment:
       - PG_HOST=teaching-management-db 
     depends_on:

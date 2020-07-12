@@ -29,16 +29,18 @@ defmodule TeachingManagement.Accounts do
   alias TeachingManagement.Accounts.Student
 
   @doc """
-  Returns the list of students.
+  Returns the list of students by group.
 
   ## Examples
 
-      iex> list_students()
+      iex> list_students_by_group(group_id)
       [%Student{}, ...]
 
   """
-  def list_students do
+  def list_students_by_group(group_id) do
     Student
+    |> join(:inner, [s], g in assoc(s, :groups))
+    |> where([s, g], g.id == ^group_id)
     |> Repo.all()
     |> Repo.preload([:groups])
   end

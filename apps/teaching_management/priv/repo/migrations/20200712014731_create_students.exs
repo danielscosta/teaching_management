@@ -8,5 +8,7 @@ defmodule TeachingManagement.Repo.Migrations.CreateStudents do
 
       timestamps()
     end
+
+    create unique_index(:students, [:internal_code])
   end
 end

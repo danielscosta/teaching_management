@@ -11,15 +11,6 @@ defmodule TeachingManagement.AccountsTest do
 
     @invalid_attrs %{document: nil}
 
-    def teacher_fixture(attrs \\ %{}) do
-      {:ok, teacher} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_teacher()
-
-      teacher
-    end
-
     test "create_teacher/1 with valid data creates a teacher" do
       assert {:ok, %Teacher{} = teacher} = Accounts.create_teacher(@valid_attrs)
       assert teacher.document == @valid_document
@@ -42,11 +33,11 @@ defmodule TeachingManagement.AccountsTest do
     @valid_attrs %{internal_code: "some internal_code"}
     @invalid_attrs %{internal_code: nil}
 
-    def student_fixture(attrs \\ %{}) do
+    def student_fixture(attrs \\ %{}, groups \\ []) do
       {:ok, student} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Accounts.create_student()
+        |> Accounts.create_student(groups)
 
       student
     end
@@ -60,9 +51,10 @@ defmodule TeachingManagement.AccountsTest do
       group
     end
 
-    test "list_students/0 returns all students" do
-      student = student_fixture()
-      assert Accounts.list_students() == [student]
+    test "list_students_by_group/1 returns all students" do
+      group = group_fixture()
+      student = student_fixture(%{}, [group])
+      assert Accounts.list_students_by_group(group.id) == [student]
     end
 
     test "create_student/1 with valid data creates a student" do

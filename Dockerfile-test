@@ -40,4 +40,4 @@ COPY . .
 
 RUN mix deps.get && mix do deps.compile, compile
 
-CMD ["sh", "-c", "mix coveralls.html --umbrella"]
+CMD ["sh", "-c", "mix coveralls --umbrella"]

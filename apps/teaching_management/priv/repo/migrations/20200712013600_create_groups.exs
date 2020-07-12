@@ -8,5 +8,7 @@ defmodule TeachingManagement.Repo.Migrations.CreateGroups do
 
       timestamps()
     end
+
+    create unique_index(:students, [:name])
   end
 end
