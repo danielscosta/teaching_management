@@ -6,8 +6,9 @@ defmodule TeachingManagement.AccountsTest do
   describe "teachers" do
     alias TeachingManagement.Accounts.Teacher
 
-    @valid_attrs %{document: Brcpfcnpj.cpf_generate()}
-    @update_attrs %{document: Brcpfcnpj.cpf_generate()}
+    @valid_document Brcpfcnpj.cpf_generate()
+    @valid_attrs %{document: @valid_document}
+
     @invalid_attrs %{document: nil}
 
     def teacher_fixture(attrs \\ %{}) do
@@ -19,19 +20,9 @@ defmodule TeachingManagement.AccountsTest do
       teacher
     end
 
-    test "list_teachers/0 returns all teachers" do
-      teacher = teacher_fixture()
-      assert Accounts.list_teachers() == [teacher]
-    end
-
-    test "get_teacher!/1 returns the teacher with given id" do
-      teacher = teacher_fixture()
-      assert Accounts.get_teacher!(teacher.id) == teacher
-    end
-
     test "create_teacher/1 with valid data creates a teacher" do
       assert {:ok, %Teacher{} = teacher} = Accounts.create_teacher(@valid_attrs)
-      assert teacher.document == "some document"
+      assert teacher.document == @valid_document
     end
 
     test "create_teacher/1 with invalid data returns error changeset" do
@@ -42,23 +33,52 @@ defmodule TeachingManagement.AccountsTest do
       assert {:error, %Ecto.Changeset{}} =
                Accounts.create_teacher(%{@valid_attrs | document: "0"})
     end
+  end
 
-    test "update_teacher/2 with valid data updates the teacher" do
-      teacher = teacher_fixture()
-      assert {:ok, %Teacher{} = teacher} = Accounts.update_teacher(teacher, @update_attrs)
-      assert teacher.document == "some updated document"
+  describe "students" do
+    alias TeachingManagement.Accounts.Student
+    alias TeachingManagement.Records
+
+    @valid_attrs %{internal_code: "some internal_code"}
+    @invalid_attrs %{internal_code: nil}
+
+    def student_fixture(attrs \\ %{}) do
+      {:ok, student} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_student()
+
+      student
     end
 
-    test "update_teacher/2 with invalid data returns error changeset" do
-      teacher = teacher_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_teacher(teacher, @invalid_attrs)
-      assert teacher == Accounts.get_teacher!(teacher.id)
+    def group_fixture(attrs \\ %{}) do
+      {:ok, group} =
+        attrs
+        |> Enum.into(%{name: "some name"})
+        |> Records.create_group()
+
+      group
     end
 
-    test "delete_teacher/1 deletes the teacher" do
-      teacher = teacher_fixture()
-      assert {:ok, %Teacher{}} = Accounts.delete_teacher(teacher)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_teacher!(teacher.id) end
+    test "list_students/0 returns all students" do
+      student = student_fixture()
+      assert Accounts.list_students() == [student]
+    end
+
+    test "create_student/1 with valid data creates a student" do
+      assert {:ok, %Student{} = student} = Accounts.create_student(@valid_attrs)
+      assert student.internal_code == "some internal_code"
+    end
+
+    test "create_student/1 with valid data creates a student with group" do
+      group = group_fixture()
+      assert {:ok, %Student{} = student} = Accounts.create_student(@valid_attrs, [group])
+      assert student.internal_code == "some internal_code"
+      assert student.groups == [group]
+    end
+
+    test "create_student/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_student(@invalid_attrs)
     end
   end
 end

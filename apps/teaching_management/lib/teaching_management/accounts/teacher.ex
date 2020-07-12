@@ -1,4 +1,5 @@
 defmodule TeachingManagement.Accounts.Teacher do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
   import Brcpfcnpj.Changeset
@@ -17,10 +18,12 @@ defmodule TeachingManagement.Accounts.Teacher do
     |> cast(attrs, [:document])
     |> validate_required([:document])
     |> unique_constraint(:document)
-    |> format_federal_document()
+    |> format_document()
     |> validate_cpf(:document)
   end
 
-  defp format_federal_document(%{changes: %{document: document}} = changeset),
+  defp format_document(%{changes: %{document: document}} = changeset),
     do: put_change(changeset, :document, String.replace(document, ~r/[^\d]/, ""))
+
+  defp format_document(changeset), do: changeset
 end

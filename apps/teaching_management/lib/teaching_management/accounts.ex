@@ -9,35 +9,6 @@ defmodule TeachingManagement.Accounts do
   alias TeachingManagement.Accounts.Teacher
 
   @doc """
-  Returns the list of teachers.
-
-  ## Examples
-
-      iex> list_teachers()
-      [%Teacher{}, ...]
-
-  """
-  def list_teachers do
-    Repo.all(Teacher)
-  end
-
-  @doc """
-  Gets a single teacher.
-
-  Raises `Ecto.NoResultsError` if the Teacher does not exist.
-
-  ## Examples
-
-      iex> get_teacher!(123)
-      %Teacher{}
-
-      iex> get_teacher!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_teacher!(id), do: Repo.get!(Teacher, id)
-
-  @doc """
   Creates a teacher.
 
   ## Examples
@@ -55,37 +26,38 @@ defmodule TeachingManagement.Accounts do
     |> Repo.insert()
   end
 
+  alias TeachingManagement.Accounts.Student
+
   @doc """
-  Updates a teacher.
+  Returns the list of students.
 
   ## Examples
 
-      iex> update_teacher(teacher, %{field: new_value})
-      {:ok, %Teacher{}}
-
-      iex> update_teacher(teacher, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> list_students()
+      [%Student{}, ...]
 
   """
-  def update_teacher(%Teacher{} = teacher, attrs) do
-    teacher
-    |> Teacher.changeset(attrs)
-    |> Repo.update()
+  def list_students do
+    Student
+    |> Repo.all()
+    |> Repo.preload([:groups])
   end
 
   @doc """
-  Deletes a teacher.
+  Creates a student.
 
   ## Examples
 
-      iex> delete_teacher(teacher)
-      {:ok, %Teacher{}}
+      iex> create_student(%{field: value})
+      {:ok, %Student{}}
 
-      iex> delete_teacher(teacher)
+      iex> create_student(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_teacher(%Teacher{} = teacher) do
-    Repo.delete(teacher)
+  def create_student(attrs \\ %{}, groups \\ []) do
+    %Student{}
+    |> Student.changeset(attrs, groups)
+    |> Repo.insert()
   end
 end

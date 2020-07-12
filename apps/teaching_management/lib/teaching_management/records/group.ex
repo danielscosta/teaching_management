@@ -1,4 +1,5 @@
 defmodule TeachingManagement.Records.Group do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 
